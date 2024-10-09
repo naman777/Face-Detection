@@ -30,7 +30,11 @@ async def count_faces(file: UploadFile = File(...)):
         "result": face_count == 1
     })
 
+@app.get("/ping")
+async def ping():
+    return {"message": "API is working!"}
+
 if __name__ == "__main__":
     import uvicorn
-    port = int(os.getenv("PORT", 8000))  # Get port from environment variable or use 8000
-    uvicorn.run(app, host="0.0.0.0", port=port)  # Bind to 0.0.0.0 to allow external access
+    port = int(os.getenv("PORT", 8000))  
+    uvicorn.run(app, host="0.0.0.0", port=port)  
