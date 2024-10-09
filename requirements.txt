@@ -1,0 +1,4 @@
+fastapi
+mediapipe
+opencv-python
+numpy
