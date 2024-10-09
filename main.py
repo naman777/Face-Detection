@@ -33,4 +33,4 @@ async def count_faces(file: UploadFile = File(...)):
 if __name__ == "__main__":
     import uvicorn
     port = int(os.getenv("PORT", 8000))  # Get port from environment variable or use 8000
-    uvicorn.run(app, host="localhost", port=port)
+    uvicorn.run(app, host="0.0.0.0", port=port)  # Bind to 0.0.0.0 to allow external access
