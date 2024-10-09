@@ -2,3 +2,5 @@ fastapi
 mediapipe
 opencv-python
 numpy
+python-multipart
+uvicorn
