@@ -3,6 +3,7 @@ from fastapi.responses import JSONResponse
 import mediapipe as mp
 import cv2
 import numpy as np
+import os
 
 app = FastAPI()
 
@@ -19,7 +20,6 @@ async def detect_faces(image):
 
 @app.post("/count_faces")
 async def count_faces(file: UploadFile = File(...)):
-
     contents = await file.read()
     nparr = np.frombuffer(contents, np.uint8)
     image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
@@ -27,9 +27,10 @@ async def count_faces(file: UploadFile = File(...)):
     face_count = await detect_faces(image)
 
     return JSONResponse({
-    "result": face_count == 1
+        "result": face_count == 1
     })
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="localhost", port=8000)
+    port = int(os.getenv("PORT", 8000))  # Get port from environment variable or use 8000
+    uvicorn.run(app, host="localhost", port=port)
