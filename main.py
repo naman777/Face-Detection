@@ -1,5 +1,6 @@
 from fastapi import FastAPI, File, UploadFile
 from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware  # Import CORSMiddleware
 import mediapipe as mp
 import cv2
 import numpy as np
@@ -9,9 +10,24 @@ import cloudinary.uploader
 import cloudinary.api
 from dotenv import load_dotenv
 
-
 app = FastAPI()
+
+# Load environment variables
 load_dotenv()
+
+# Configure CORS
+origins = [
+    "http://localhost:3000",  # Update with your frontend's URL
+    "https://your-frontend-domain.com",  # Add more origins as needed
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,  # Allow specific origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all HTTP methods
+    allow_headers=["*"],  # Allows all headers
+)
 
 # Initialize Cloudinary with environment variables (set your cloud_name, api_key, and api_secret)
 cloudinary.config(
@@ -19,7 +35,6 @@ cloudinary.config(
     api_key=os.getenv("CLOUDINARY_API_KEY"),
     api_secret=os.getenv("CLOUDINARY_API_SECRET")
 )
-
 
 mp_face_detection = mp.solutions.face_detection
 face_detection = mp_face_detection.FaceDetection(model_selection=1, min_detection_confidence=0.7)
