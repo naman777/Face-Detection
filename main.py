@@ -1,35 +1,28 @@
 from fastapi import FastAPI, File, UploadFile
 from fastapi.responses import JSONResponse
-from fastapi.middleware.cors import CORSMiddleware  # Import CORSMiddleware
+from fastapi.middleware.cors import CORSMiddleware
 import mediapipe as mp
 import cv2
 import numpy as np
 import os
 import cloudinary
 import cloudinary.uploader
-import cloudinary.api
 from dotenv import load_dotenv
 
 app = FastAPI()
 
-# Load environment variables
-load_dotenv()
-
-# Configure CORS
-origins = [
-    "http://localhost:3000",  # Update with your frontend's URL
-    "https://your-frontend-domain.com",  # Add more origins as needed
-]
-
+# Allow CORS from all origins
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,  # Allow specific origins
+    allow_origins=["*"],  # Allows all origins
     allow_credentials=True,
-    allow_methods=["*"],  # Allows all HTTP methods
-    allow_headers=["*"],  # Allows all headers
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],   # Allows all headers
 )
 
-# Initialize Cloudinary with environment variables (set your cloud_name, api_key, and api_secret)
+load_dotenv()
+
+# Initialize Cloudinary with environment variables
 cloudinary.config(
     cloud_name=os.getenv("CLOUDINARY_CLOUD_NAME"),
     api_key=os.getenv("CLOUDINARY_API_KEY"),
